@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import configuration from './config/configuration';
+import configuration from './infrastructure/config/configuration';
+import { PrismaService } from './infrastructure/database/prisma.service';
+import { UserModule } from './modules/user/user.module';
+import { PrismaModule } from './infrastructure/database/prisma.module';
 
 @Module({
   imports: [
@@ -10,10 +11,12 @@ import configuration from './config/configuration';
       isGlobal: true,
       cache: true,
       envFilePath: ['.env'],
-      load:[configuration]
+      load: [configuration],
     }),
+    PrismaModule,
+    UserModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [PrismaService],
 })
 export class AppModule {}

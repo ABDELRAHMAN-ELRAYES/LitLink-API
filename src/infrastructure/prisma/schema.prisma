@@ -1,0 +1,200 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(uuid())
+  name     String
+  username String @unique
+  email    String @unique
+  password String
+  // profilePicture         String    @default("")
+  // profileCover           String    @default("")
+  // bio                    String    @default("")
+  // joinedDate             DateTime  @default(now())
+  // resetPasswordUpdatedAt DateTime  @updatedAt
+  // resetPasswordToken     String    @default("")
+  // phoneNumber            String?
+  // role                   String    @default("user")
+  // birthDate              DateTime?
+  // address                String?
+  // isVerified             String?   @default("false")
+
+  // Tweets    Tweet[]
+  // Likes     Like[]
+  // BookMarks Bookmark[]
+  // Sharedtweets SharedTweet[]
+  // Retweet   Retweet[]
+  // replies      Reply[]
+  // ReplyLike    ReplyLike[]
+  // ReplyComment ReplyComment[]
+  // RetweetReply RetweetReply[]
+  // SavedReply   SavedReply[]
+}
+//TODO : 
+// model Tweet {
+//   id        String   @id @default(uuid())
+//   content   String
+//   createdAt DateTime @default(now())
+//   // status    String // not migrated
+
+//   createdById String
+//   createdBy   User   @relation(fields: [createdById], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+//   media      Media[]
+//   likes      Like[]
+//   // replies     Reply[]
+//   SavedTweet Bookmark[] @relation("Bookmark")
+//   retweet    Retweet[]  @relation("Retweet")
+//   // sharedtweet SharedTweet[] @relation("SharedTweet")
+// }
+
+// model Media {
+//   id  String @id @default(uuid())
+//   url String
+//   // type String // not migrated
+
+//   tweetId String
+//   tweet   Tweet  @relation(fields: [tweetId], references: [id])
+
+//   @@index([tweetId])
+// }
+
+// model Like {
+//   //! id        String   @id @default(uuid())
+//   // createdAt DateTime @default(now())
+//   userId  String
+//   user    User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+//   tweetId String
+//   tweet   Tweet  @relation(fields: [tweetId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+//   @@unique([userId, tweetId])
+//   @@index([tweetId])
+//   @@index([userId])
+// }
+
+// model Bookmark {
+//   id      String @id @default(uuid())
+//   userId  String
+//   user    User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+//   tweetId String
+//   tweet   Tweet  @relation("Bookmark", fields: [tweetId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+//   // replyId String
+//   // reply   Reply  @relation(fields: [replyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+//   @@unique([userId, tweetId])
+//   @@index([tweetId])
+//   @@index([userId])
+//   @@index([id])
+// }
+
+// model Retweet {
+//   id          String   @id @default(uuid())
+//   createdAt   DateTime @default(now())
+//   content     String?
+//   retweetedAt DateTime @default(now())
+//   userId      String
+//   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+//   tweetId     String
+//   tweet       Tweet    @relation("Retweet", fields: [tweetId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+//   @@unique([userId, tweetId])
+//   @@index([tweetId])
+//   @@index([userId])
+// }
+
+// //! saved reply
+
+// model SavedReply {
+//   id        String   @id @default(uuid())
+//   createdAt DateTime @default(now())
+//   userId    String
+//   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+//   replyId   String
+//   reply     Reply    @relation("SavedReply", fields: [replyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+//   @@index([replyId])
+//   @@index([userId])
+// }
+
+// model Reply {
+//   id           String         @id @default(uuid())
+//   content      String
+//   media        String
+//   createdAt    DateTime       @default(now())
+//   tweetId      String
+//   tweet        Tweet          @relation(fields: [tweetId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+//   userId       String
+//   user         User           @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+//   ReplyLike    ReplyLike[]    @relation("ReplyLike")
+//   ReplyComment ReplyComment[] @relation("ReplyComment")
+//   SavedReply   SavedReply[]   @relation("SavedReply")
+//   RetweetReply RetweetReply[] @relation("RetweetReply")
+
+//   @@index([tweetId])
+//   @@index([userId])
+// }
+
+// //! replies on the tweet reply
+
+// model ReplyComment {
+//   id        String   @id @default(uuid())
+//   createdAt DateTime @default(now())
+//   userId    String
+//   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+//   replyId   String
+//   reply     Reply    @relation("ReplyComment", fields: [replyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+//   @@index([replyId])
+//   @@index([userId])
+// }
+
+// //! likes on the tweet reply
+// model ReplyLike {
+//   id        String   @id @default(uuid())
+//   createdAt DateTime @default(now())
+//   userId    String
+//   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+//   replyId   String
+//   reply     Reply    @relation("ReplyLike", fields: [replyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+//   @@index([replyId])
+//   @@index([userId])
+// }
+
+// //! retweet reply
+
+// model RetweetReply {
+//   id        String   @id @default(uuid())
+//   createdAt DateTime @default(now())
+//   userId    String
+//   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+//   replyId   String
+//   reply     Reply    @relation("RetweetReply", fields: [replyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+//   @@index([replyId])
+//   @@index([userId])
+// }
+
+// model SharedTweet {
+//   id      String @id @default(uuid())
+//   userId  String
+//   user    User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+//   tweetId String
+//   tweet   Tweet  @relation("SharedTweet", fields: [tweetId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+//   @@unique([userId, tweetId])
+//   @@index([tweetId])
+//   @@index([userId])
+// }
