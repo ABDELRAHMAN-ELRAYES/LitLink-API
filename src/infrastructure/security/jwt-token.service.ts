@@ -15,7 +15,7 @@ export class JwtTokenService {
   }
 
   // storing token and send a cookie
-  sendTokenInCookie(response: Response, token: string) {
+  private sendTokenInCookie(response: Response, token: string) {
     response.cookie('jwt', token, {
       httpOnly: true,
       secure: true,
