@@ -8,11 +8,8 @@ export class BcryptPasswordService {
     return bcrypt.hash(text, 12);
   }
 
-  // check if the user recieved input is similar as the actual user passord
-  async isValidPassword(
-    hashedPassword: string,
-    receivedPassword: string,
-  ): Promise<boolean> {
-    return bcrypt.compare(receivedPassword, hashedPassword);
+  // comparing hashed text with a normal one
+  async areMatched(hashedText: string, plainText: string): Promise<boolean> {
+    return bcrypt.compare(plainText, hashedText);
   }
 }

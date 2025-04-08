@@ -1,30 +1,9 @@
+import { RegisterDto } from 'src/common/dtos/register.dto';
+import { IUser } from '../interfaces/IUser';
+
 export interface IUserRepository {
-  createUser: (
-    name: string,
-    username: string,
-    email: string,
-    password: string,
-  ) => Promise<{
-    id: string,
-    name: string,
-    username: string,
-    email: string,
-    password: string,
-  }>;
-  getAllUsers: () => Promise<
-    {
-      id: string,
-      name: string,
-      username: string,
-      email: string,
-      password: string,
-    }[]
-  >;
-  getUserById: (id: string) => Promise<{
-    id: string,
-    name: string,
-    username: string,
-    email: string,
-    password: string,
-  }| null>;
+  createNewUser: (data: IUser) => Promise<IUser>;
+  getAllUsers: () => Promise<IUser[]>;
+  findUserById: (id: string) => Promise<IUser | null>;
+  findUserByEmailOrUsername: (emailOrUsername: string) => Promise<IUser | null>;
 }
