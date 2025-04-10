@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -10,9 +11,9 @@ import {
   Req,
   Res,
 } from '@nestjs/common';
-import { UserService } from './user.service';
+import { UserService } from './application/services/user.service';
 import { Request, Response } from 'express';
-import { AuthenticationService } from '../authentication/authentication.service';
+import { AuthenticationService } from '../authentication/application/services/authentication.service';
 
 @Controller('users')
 export class UserController {
@@ -25,12 +26,17 @@ export class UserController {
     return this.userService.createNewUser(body);
   }
   @Get('')
-  async getAllUsers(@Req() request: Request) {
+  async getAllUsers() {
     return this.userService.getAllUsers();
   }
   @Get('/:id')
   async getUserById(@Query('id') query) {
     return this.userService.getUserById(query);
+  }
+  @Delete('/:id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async deleteUserById(@Param('id') param) {
+    await this.userService.deleteUserById(param);
   }
   // verify user via OTP which was sent throw user email
   @Post(':id/auth/verify')

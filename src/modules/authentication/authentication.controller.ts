@@ -10,10 +10,10 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { AuthenticationService } from './authentication.service';
-import { LoginDto } from 'src/common/dtos/login.dto';
+import { AuthenticationService } from './application/services/authentication.service';
+import { LoginDto } from 'src/modules/authentication/application/dto/login.dto';
 import { Request, Response } from 'express';
-import { RegisterDto } from 'src/common/dtos/register.dto';
+import { RegisterDto } from 'src/modules/user/application/dto/register.dto';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('auth')
@@ -31,13 +31,24 @@ export class AuthenticationController {
     const data = await this.authenticationService.login(body, response);
     response.json(data);
   }
-
+  /**
+   * register new user
+   * @param {RegisterDto} body
+   * @param {Request} request
+   * @returns
+   */
   @Post('register')
   @UsePipes(new ValidationPipe({ whitelist: true }))
   @UseInterceptors(AnyFilesInterceptor())
-  async register(@Body() body: RegisterDto,@Req() request: Request) {
+  async register(@Body() body: RegisterDto, @Req() request: Request) {
     const data = await this.authenticationService.register(body, request);
+    
     return data;
   }
 
+  @Post('/reset-password')
+  async forgetPassword() {
+    // 1- send email with the link which will be used to reset password
+    // 2- reset password
+  }
 }

@@ -1,11 +1,11 @@
-import {  Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import configuration from './infrastructure/config/configuration';
-import { PrismaService } from './infrastructure/database/prisma.service';
+import configuration from './shared/config/configuration';
+import { PrismaService } from './shared/prisma/prisma.service';
 import { UserModule } from './modules/user/user.module';
-import { PrismaModule } from './infrastructure/database/prisma.module';
+import { PrismaModule } from './shared/prisma/prisma.module';
 import { AuthenticationModule } from './modules/authentication/authentication.module';
-import { SecurityModule } from './infrastructure/security/security.module';
+import { SecurityModule } from './shared/security/security.module';
 
 @Module({
   imports: [

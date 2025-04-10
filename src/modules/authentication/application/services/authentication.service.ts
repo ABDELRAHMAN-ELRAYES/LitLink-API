@@ -1,21 +1,20 @@
 import {
   BadRequestException,
-  ForbiddenException,
   Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Request, response, Response } from 'express';
-import { LoginDto } from 'src/common/dtos/login.dto';
-import { RegisterDto } from 'src/common/dtos/register.dto';
-import { generateOtp } from 'src/common/utils/otp-generator';
-import { generateUsernameFromEmail } from 'src/common/utils/username-generator';
-import { IUser } from 'src/core/interfaces/IUser';
+import { Request, Response } from 'express';
+import { LoginDto } from 'src/modules/authentication/application/dto/login.dto';
+import { RegisterDto } from 'src/modules/user/application/dto/register.dto';
+import { generateOtp } from 'src/shared/utils/otp-generator';
+import { generateUsernameFromEmail } from 'src/shared/utils/username-generator';
+import { IUser } from 'src/modules/user/domain/entities/IUser';
 import { MailService } from 'src/infrastructure/email/email.service';
-import { UserRepository } from 'src/infrastructure/repositories/user.repository';
-import { BcryptPasswordService } from 'src/infrastructure/security/bcrypt-password.service';
-import { JwtTokenService } from 'src/infrastructure/security/jwt-token.service';
+import { UserRepository } from 'src/modules/user/infrastructure/repositories/user.repository';
+import { BcryptPasswordService } from 'src/shared/security/bcrypt-password.service';
+import { JwtTokenService } from 'src/shared/security/jwt-token.service';
 
 @Injectable()
 export class AuthenticationService {
@@ -138,4 +137,6 @@ export class AuthenticationService {
 
     return { status: 'success', token };
   }
+
+  async forgetPassword() {}
 }

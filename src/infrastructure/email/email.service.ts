@@ -32,7 +32,7 @@ export class MailService {
     plainTextBody: string,
     htmlBody: string,
   ) {
-    const info = await this.transporter.sendMail({
+    await this.transporter.sendMail({
       from: this.config.get('OFFICIAL_MAIL'),
       to: receiver,
       subject: title,

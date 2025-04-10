@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { RegisterDto } from 'src/common/dtos/register.dto';
-import { IUser } from 'src/core/interfaces/IUser';
-import { UserRepository } from 'src/infrastructure/repositories/user.repository';
+import { IUser } from 'src/modules/user/domain/entities/IUser';
+import { UserRepository } from 'src/modules/user/infrastructure/repositories/user.repository';
 
 @Injectable()
 export class UserService {
@@ -17,5 +16,9 @@ export class UserService {
   async getUserById(id: string) {
     const user = await this.userRepository.findUserById(id);
     return user;
+  }
+  async deleteUserById(id: string) {
+    await this.userRepository.deleteUserById(id);
+    console.log('user is deleted ,Successfully');
   }
 }

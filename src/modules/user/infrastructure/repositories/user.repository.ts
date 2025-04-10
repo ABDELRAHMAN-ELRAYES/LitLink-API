@@ -1,7 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '../database/prisma.service';
-import { IUserRepository } from 'src/core/repositories/IUser.repository';
-import { IUser } from 'src/core/interfaces/IUser';
+import { PrismaService } from '../../../../shared/prisma/prisma.service';
+import { IUserRepository } from 'src/modules/user/domain/interfaces/IUser.repository';
+import { IUser } from 'src/modules/user/domain/entities/IUser';
+import { User } from '../../domain/entities/user.entity';
+import { UserMapper } from '../mappers/user.mapper';
 
 @Injectable()
 export class UserRepository implements IUserRepository {
@@ -11,13 +13,38 @@ export class UserRepository implements IUserRepository {
    * create new user
    * @returns
    */
-  async createNewUser(data: IUser) {
-    return this.prismaService.user.create({
-      data,
+  async createNewUser(userData): Promise<User> {
+    const userEntity = new User(
+      userData.firstName,
+      userData.lastName,
+      userData.email,
+      userData.birthdate,
+      userData.password,
+      new Date(),
+      userData.username,
+      userData.otp,
+      false,
+      userData.otpExpiresAt,
+      null,
+    );
+    const prismaUser = UserMapper.toPersistence(userEntity);
+    const user = await this.prismaService.user.create({
+      data: prismaUser,
     });
+    // console.log(userEntity);
+    // console.log('/***************************************/');
+    // console.log(prismaUser);
+    // console.log('/***************************************/');
+    // console.log(user);
+
+    return UserMapper.toDomain(user);
   }
   async getAllUsers() {
     return this.prismaService.user.findMany();
+  }
+
+  async deleteUserById(id: string) {
+    await this.prismaService.user.delete({ where: { id: id } });
   }
   // Find user by the provided id
   async findUserById(id: string) {
@@ -49,6 +76,7 @@ export class UserRepository implements IUserRepository {
   }
   // Update user  OTP verification status
   async updateUserOtpStatus(id: string) {
+    //! there is an error that the field (isOtpVerified) doesn't change from the first time.
     const user = await this.prismaService.user.update({
       where: { id },
       data: { isOtpVerified: true },
@@ -56,5 +84,6 @@ export class UserRepository implements IUserRepository {
     if (!user) {
       throw new NotFoundException('This Email or User is not found');
     }
+    return user;
   }
 }
